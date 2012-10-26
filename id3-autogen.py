@@ -7,6 +7,12 @@ in the 'songname' field.
 
 Copyright: (C) 2012 Michael Bemmerl
 License: MIT License (see COPYING)
+
+Requirements:
+- Python (well, obvious ;-)
+- pytagger (http://www.liquidx.net/pytagger/)
+
+Tested with Python 2.7.2 & pytagger 0.5.
 """
 
 from tagger import *
