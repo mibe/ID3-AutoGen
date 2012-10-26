@@ -23,6 +23,7 @@ parser.add_argument('DIR', help="Directory which contains the MP3 files.")
 parser.add_argument('-c', '--comment', help="Content of 'comment' field.")
 parser.add_argument('-a', '--album', help="Content of 'album' field.")
 parser.add_argument('-y', '--year', help="Content of 'year' field.", type=int)
+parser.add_argument('-p', '--pattern', help="Process only files matching this pattern.")
 
 args = parser.parse_args()
 dir = args.DIR
@@ -55,7 +56,7 @@ def get_artist_title(path):
     # Splitting out artist & title with regular expression
     result = re.search("^([\w\s]+) - ([\w\s]+)", name)
 
-    if result == None:
+    if result is None:
         raise ValueError("Could not detect artist & title for '%s'." % filename)
     else:
         artist = result.group(1);
@@ -73,10 +74,14 @@ def do_file(path):
         print "ID3v1 exception '%s' while working with %s" % (str(e), filename)
 
 # Check if it's a file or a directory
-if not os.path.isdir(dir):
+if os.path.isdir(dir) is False:
     do_file(dir)
 else:
-    for filename in fnmatch.filter(os.listdir(dir), '*.mp3'):
+    pattern = "*.mp3"
+    if args.pattern is not None:
+        pattern = args.pattern
+
+    for filename in fnmatch.filter(os.listdir(dir), pattern):
         path = os.path.join(dir, filename)
         if os.path.isfile(path):
             do_file(path)
