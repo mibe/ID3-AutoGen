@@ -28,13 +28,14 @@ args = parser.parse_args()
 dir = args.DIR
 
 def set_file_fields(path, artist, title):
+    """ Set the ID3v1 tag with the field data """
     directory, filename = os.path.split(path)
 
     id3 = ID3v1(path)
     id3.artist = artist
     id3.songname = title
 
-    """ Set additional fields, if available """
+    # Set additional fields, if available
     if args.comment is not None:
         id3.comment = args.comment
     if args.album is not None:
@@ -46,12 +47,12 @@ def set_file_fields(path, artist, title):
 
     print "Tag for %s set." % filename
 
-
 def get_artist_title(path):
+    """ Return artist & title information from filename """
     directory, filename = os.path.split(path)
     name, extension = os.path.splitext(filename)
 
-    """ Splitting out artist & title with regular expression """
+    # Splitting out artist & title with regular expression
     result = re.search("^([\w\s]+) - ([\w\s]+)", name)
 
     if result == None:
@@ -62,6 +63,7 @@ def get_artist_title(path):
         return artist, title
 
 def do_file(path):
+    """ Process the file given in the argument """
     try:
         artist, title = get_artist_title(path)
         set_file_fields(path, artist, title)
@@ -70,7 +72,7 @@ def do_file(path):
     except ID3Exception, e:
         print "ID3v1 exception '%s' while working with %s" % (str(e), filename)
 
-""" Check if it's a file or a directory """
+# Check if it's a file or a directory
 if not os.path.isdir(dir):
     do_file(dir)
 else:
