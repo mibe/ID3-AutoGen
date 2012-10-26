@@ -30,25 +30,22 @@ dir = args.DIR
 def set_file_fields(path, artist, title):
     directory, filename = os.path.split(path)
 
-    try:
-        id3 = ID3v1(path)
-        id3.artist = artist
-        id3.songname = title
+    id3 = ID3v1(path)
+    id3.artist = artist
+    id3.songname = title
 
-        """ Set additional fields, if available """
-        if args.comment is not None:
-            id3.comment = args.comment
-        if args.album is not None:
-            id3.album = args.album
-        if args.year is not None:
-            id3.year = year
+    """ Set additional fields, if available """
+    if args.comment is not None:
+        id3.comment = args.comment
+    if args.album is not None:
+        id3.album = args.album
+    if args.year is not None:
+        id3.year = year
 
-        id3.commit()
+    id3.commit()
 
-        print "Tag for %s set." % filename
+    print "Tag for %s set." % filename
 
-    except ID3Exception, e:
-        print "ID3v1 exception '%s' while working with %s" % (str(e), filename)
 
 def get_artist_title(path):
     directory, filename = os.path.split(path)
@@ -58,15 +55,20 @@ def get_artist_title(path):
     result = re.search("^([\w\s]+) - ([\w\s]+)", name)
 
     if result == None:
-        raise ValueError("Could not detect artist & title from '%s'." % name)
+        raise ValueError("Could not detect artist & title for '%s'." % filename)
     else:
         artist = result.group(1);
         title = result.group(2);
         return artist, title
 
 def do_file(path):
-    artist, title = get_artist_title(path)
-    set_file_fields(path, artist, title)
+    try:
+        artist, title = get_artist_title(path)
+        set_file_fields(path, artist, title)
+    except ValueError, e:
+        print str(e)
+    except ID3Exception, e:
+        print "ID3v1 exception '%s' while working with %s" % (str(e), filename)
 
 """ Check if it's a file or a directory """
 if not os.path.isdir(dir):
