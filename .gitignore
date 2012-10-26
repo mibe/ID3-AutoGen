@@ -1,3 +1,7 @@
+# Project specific
+testfile.mp3
+testdir
+
 *.py[co]
 
 # Packages
