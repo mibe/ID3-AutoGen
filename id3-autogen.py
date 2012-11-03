@@ -22,7 +22,7 @@ parser = argparse.ArgumentParser(description="Simple script for generating ID3v1
 parser.add_argument('DIR', help="Directory which contains the MP3 files.")
 parser.add_argument('-c', '--comment', help="Content of 'comment' field.")
 parser.add_argument('-a', '--album', help="Content of 'album' field.")
-parser.add_argument('-y', '--year', help="Content of 'year' field.", type=int)
+parser.add_argument('-y', '--year', help="Content of 'year' field.")
 parser.add_argument('-p', '--pattern', help="Process only files matching this pattern.")
 
 args = parser.parse_args()
@@ -42,7 +42,7 @@ def set_file_fields(path, artist, title):
     if args.album is not None:
         id3.album = args.album
     if args.year is not None:
-        id3.year = year
+        id3.year = args.year
 
     id3.commit()
 
