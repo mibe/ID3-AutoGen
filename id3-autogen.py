@@ -24,6 +24,7 @@ parser.add_argument('-c', '--comment', help="Content of 'comment' field.")
 parser.add_argument('-a', '--album', help="Content of 'album' field.")
 parser.add_argument('-y', '--year', help="Content of 'year' field.")
 parser.add_argument('-p', '--pattern', help="Process only files matching this pattern.")
+parser.add_argument('--artist', help="Overwrite artist detection.")
 
 args = parser.parse_args()
 dir = args.DIR
@@ -67,6 +68,11 @@ def do_file(path):
     """ Process the file given in the argument """
     try:
         artist, title = get_artist_title(path)
+
+        # Check if artist is overwritten from the command line
+        if args.artist is not None:
+            artist = args.artist
+
         set_file_fields(path, artist, title)
     except ValueError, e:
         print str(e)
