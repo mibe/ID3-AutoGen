@@ -25,3 +25,4 @@ Usage
       -y YEAR, --year YEAR  Content of 'year' field.
       -p PATTERN, --pattern PATTERN
                             Process only files matching this pattern.
+      --artist ARTIST       Overwrite artist detection.
