@@ -47,7 +47,7 @@ def set_file_fields(path, artist, title):
 
     id3.commit()
 
-    print "Tag for %s set." % filename
+    print "Tag for \"%s\" set." % filename
 
 def get_artist_title(path):
     """ Return artist & title information from filename """
