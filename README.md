@@ -26,3 +26,16 @@ Usage
       -p PATTERN, --pattern PATTERN
                             Process only files matching this pattern.
       --artist ARTIST       Overwrite artist detection.
+
+Requirements
+-----
+
+* Python (well, obviously ;-)
+* pytagger (http://www.liquidx.net/pytagger/)
+
+Tested with Python 2.7.2 & pytagger 0.5.
+
+License
+-----
+
+MIT License (see COPYING)
