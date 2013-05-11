@@ -60,8 +60,8 @@ def get_artist_title(path):
     if result is None:
         raise ValueError("Could not detect artist & title for '%s'." % filename)
     else:
-        artist = result.group(1);
-        title = result.group(2);
+        artist = result.group(1).strip()
+        title = result.group(2).strip()
         return artist, title
 
 def do_file(path):
