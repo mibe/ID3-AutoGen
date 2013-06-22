@@ -55,7 +55,7 @@ def get_artist_title(path):
     name, extension = os.path.splitext(filename)
 
     # Splitting out artist & title with regular expression
-    result = re.search("^([\w\s\.\'\+]+) - ([\w\s\.\'-]+)", name)
+    result = re.search("^([\w\s\.\'\+]+) - ([\w\s\.\',-]+)", name)
 
     if result is None:
         raise ValueError("Could not detect artist & title for '%s'." % filename)
