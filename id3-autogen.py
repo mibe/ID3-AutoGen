@@ -29,6 +29,7 @@ parser.add_argument('--artist', help="Overwrite artist detection.")
 args = parser.parse_args()
 dir = args.DIR
 
+
 def set_file_fields(path, artist, title):
     """ Set the ID3v1 tag with the field data """
     directory, filename = os.path.split(path)
@@ -49,6 +50,7 @@ def set_file_fields(path, artist, title):
 
     print "Tag for \"%s\" set." % filename
 
+
 def get_artist_title(path):
     """ Return artist & title information from filename """
     directory, filename = os.path.split(path)
@@ -63,6 +65,7 @@ def get_artist_title(path):
         artist = result.group(1).strip()
         title = result.group(2).strip()
         return artist, title
+
 
 def do_file(path):
     """ Process the file given in the argument """
