@@ -5,7 +5,7 @@ For example, the file "MyBand0815 - Freaking Great Song.mp3" would result in a
 ID3v1 tag with "MyBand0815" in the 'artist' field and "Freaking Great Song"
 in the 'songname' field.
 
-Copyright: (C) 2012, 2013 Michael Bemmerl
+Copyright: (C) 2012-2014 Michael Bemmerl
 License: MIT License (see COPYING)
 
 Requirements:
@@ -25,6 +25,7 @@ parser.add_argument('-a', '--album', help="Content of 'album' field.")
 parser.add_argument('-y', '--year', help="Content of 'year' field.")
 parser.add_argument('-p', '--pattern', help="Process only files matching this pattern.")
 parser.add_argument('--artist', help="Overwrite artist detection.")
+parser.add_argument('--dry-run', action='store_true', help="Do not change any file.")
 
 args = parser.parse_args()
 dir = args.DIR
@@ -46,7 +47,8 @@ def set_file_fields(path, artist, title):
     if args.year is not None:
         id3.year = args.year
 
-    id3.commit()
+    if not args.dry_run:
+        id3.commit()
 
     print "Tag for \"%s\" set." % filename
 
