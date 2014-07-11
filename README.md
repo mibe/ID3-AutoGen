@@ -26,6 +26,7 @@ Usage
       -p PATTERN, --pattern PATTERN
                             Process only files matching this pattern.
       --artist ARTIST       Overwrite artist detection.
+      --verbose             More detailed output.
 
 Requirements
 -----

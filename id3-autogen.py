@@ -26,6 +26,7 @@ parser.add_argument('-y', '--year', help="Content of 'year' field.")
 parser.add_argument('-p', '--pattern', help="Process only files matching this pattern.")
 parser.add_argument('--artist', help="Overwrite artist detection.")
 parser.add_argument('--dry-run', action='store_true', help="Do not change any file.")
+parser.add_argument('--verbose', action='store_true', help="More detailed output.")
 
 args = parser.parse_args()
 dir = args.DIR
@@ -50,7 +51,10 @@ def set_file_fields(path, artist, title):
     if not args.dry_run:
         id3.commit()
 
-    print "Tag for \"%s\" set." % filename
+    if not args.verbose:
+        print "Tag for \"%s\" set." % filename
+    else:
+        print "Tag for \"%s\" set:%s\tArtist: %s%s\tTitle: %s" % (filename, os.linesep, artist, os.linesep, title)
 
 
 def get_artist_title(path):
