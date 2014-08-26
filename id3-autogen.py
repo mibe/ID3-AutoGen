@@ -27,10 +27,15 @@ parser.add_argument('-p', '--pattern', help="Process only files matching this pa
 parser.add_argument('--artist', help="Overwrite artist detection.")
 parser.add_argument('--dry-run', action='store_true', help="Do not change any file.")
 parser.add_argument('--verbose', action='store_true', help="More detailed output.")
+parser.add_argument('--filter', nargs='+', help='Filter this words from artist / title.')
 
 args = parser.parse_args()
 dir = args.DIR
 
+if args.filter is None:
+    filter_regex = None
+else:
+    filter_regex = re.compile('|'.join(map(re.escape, args.filter)))
 
 def set_file_fields(path, artist, title):
     """ Set the ID3v1 tag with the field data """
@@ -68,9 +73,12 @@ def get_artist_title(path):
     if result is None:
         raise ValueError("Could not detect artist & title for '%s'." % filename)
     else:
-        artist = result.group(1).strip()
-        title = result.group(2).strip()
-        return artist, title
+        artist = result.group(1)
+        title = result.group(2)
+        if filter_regex is not None:
+            artist = filter_regex.sub('', artist)
+            title = filter_regex.sub('', title)
+        return artist.strip(), title.strip()
 
 
 def do_file(path):

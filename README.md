@@ -27,14 +27,15 @@ Usage
                             Process only files matching this pattern.
       --artist ARTIST       Overwrite artist detection.
       --verbose             More detailed output.
-
+      --filter FILTER [FILTER ...]
+                            Filter this words from artist / title.
 Requirements
 -----
 
 * Python (well, obviously ;-)
 * pytagger (http://www.liquidx.net/pytagger/)
 
-Tested with Python 2.7.2 & pytagger 0.5.
+Tested with Python 2.7.6 & pytagger 0.5.
 
 License
 -----
