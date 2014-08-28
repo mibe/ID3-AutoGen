@@ -59,7 +59,8 @@ def set_file_fields(path, artist, title):
     if not args.verbose:
         print "Tag for \"%s\" set." % filename
     else:
-        print "Tag for \"%s\" set:%s\tArtist: %s%s\tTitle: %s" % (filename, os.linesep, artist, os.linesep, title)
+        print "Tag for \"%s\" set:%s\tArtist: '%s'%s\tTitle: '%s'" % (filename, os.linesep, artist, os.linesep, title)
+        print "\tAlbum: '%s'%s\tYear: '%s'%s\tComment: '%s'" % (id3.album, os.linesep, id3.year, os.linesep, id3.comment)
 
 
 def get_artist_title(path):
