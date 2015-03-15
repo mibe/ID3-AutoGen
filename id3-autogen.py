@@ -5,7 +5,7 @@ For example, the file "MyBand0815 - Freaking Great Song.mp3" would result in a
 ID3v1 tag with "MyBand0815" in the 'artist' field and "Freaking Great Song"
 in the 'songname' field.
 
-Copyright: (C) 2012-2014 Michael Bemmerl
+Copyright: (C) 2012-2015 Michael Bemmerl
 License: MIT License (see COPYING)
 
 Requirements:
@@ -27,7 +27,7 @@ parser.add_argument('-p', '--pattern', help="Process only files matching this pa
 parser.add_argument('--artist', help="Overwrite artist detection.")
 parser.add_argument('--dry-run', action='store_true', help="Do not change any file.")
 parser.add_argument('--verbose', action='store_true', help="More detailed output.")
-parser.add_argument('--filter', nargs='+', help='Filter this words from artist / title.')
+parser.add_argument('--filter', nargs='+', help='Filter these words from artist / title.')
 
 args = parser.parse_args()
 dir = args.DIR
