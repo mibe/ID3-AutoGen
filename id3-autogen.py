@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 
 """ Simple script for generating ID3v1 tags from filename patterns.
 For example, the file "MyBand0815 - Freaking Great Song.mp3" would result in a
@@ -69,7 +70,7 @@ def get_artist_title(path):
     name, extension = os.path.splitext(filename)
 
     # Splitting out artist & title with regular expression
-    result = re.search("^([\w\s\.\'\+\-&]+) - ([\(\)\w\s\.\',\-\!]+)", name)
+    result = re.search("^([\w\s\.\'\+\-&]+?) - ([\(\)\w\s\.\',\-\!]+)", name)
 
     if result is None:
         raise ValueError("Could not detect artist & title for '%s'." % filename)
