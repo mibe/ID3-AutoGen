@@ -6,7 +6,7 @@ For example, the file "MyBand0815 - Freaking Great Song.mp3" would result in a
 ID3v1 tag with "MyBand0815" in the 'artist' field and "Freaking Great Song"
 in the 'songname' field.
 
-Copyright: (C) 2012-2015 Michael Bemmerl
+Copyright: (C) 2012-2016 Michael Bemmerl
 License: MIT License (see COPYING)
 
 Requirements:
@@ -70,7 +70,7 @@ def get_artist_title(path):
     name, extension = os.path.splitext(filename)
 
     # Splitting out artist & title with regular expression
-    result = re.search("^([\w\s\.\'\+\-&]+?) - ([\(\)\w\s\.\',\-\!]+)", name)
+    result = re.search("^([\w\s\.\'\+\-&]+?) - ([\(\)\w\s\.\',\-\!&]+)", name)
 
     if result is None:
         raise ValueError("Could not detect artist & title for '%s'." % filename)
