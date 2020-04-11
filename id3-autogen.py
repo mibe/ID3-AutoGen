@@ -8,6 +8,7 @@ in the 'songname' field.
 
 Copyright: (C) 2012-2016, 2020 Michael Bemmerl
 License: MIT License (see COPYING)
+SPDX-License-Identifier: MIT
 
 Requirements:
 - Python >= 3.6
