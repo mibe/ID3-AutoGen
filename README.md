@@ -33,9 +33,13 @@ Requirements
 -----
 
 * Python (well, obviously ;-)
-* pytagger (http://www.liquidx.net/pytagger/)
+* mp3-tagger (https://pypi.org/project/mp3-tagger/)
 
-Tested with Python 2.7.6 & pytagger 0.5.
+Tested with Python 3.8.2 & mp3-tagger 1.0.
+
+Installation
+-----
+Run ```pip install -r requirements.txt``` to install the dependencies with pip.
 
 License
 -----
