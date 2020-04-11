@@ -6,17 +6,17 @@ For example, the file "MyBand0815 - Freaking Great Song.mp3" would result in a
 ID3v1 tag with "MyBand0815" in the 'artist' field and "Freaking Great Song"
 in the 'songname' field.
 
-Copyright: (C) 2012-2016 Michael Bemmerl
+Copyright: (C) 2012-2016, 2020 Michael Bemmerl
 License: MIT License (see COPYING)
 
 Requirements:
 - Python >= 3.6
-- pytagger (http://www.liquidx.net/pytagger/)
+- mp3-tagger (https://github.com/artcom-net/mp3-tagger)
 
-Tested with Python 3.8.2 & pytagger 0.5.
+Tested with Python 3.8.2 & mp3-tagger 1.0.
 """
 
-from tagger import *
+from mp3_tagger import MP3File, VERSION_1
 import argparse, os, fnmatch, re
 
 parser = argparse.ArgumentParser(description="Simple script for generating ID3v1 tags from filename")
@@ -42,9 +42,11 @@ def set_file_fields(path, artist, title):
     """ Set the ID3v1 tag with the field data """
     directory, filename = os.path.split(path)
 
-    id3 = ID3v1(path)
+    id3 = MP3File(path)
+    id3.set_version(VERSION_1)
+
     id3.artist = artist
-    id3.songname = title
+    id3.song = title
 
     # Set additional fields, if available
     if args.comment is not None:
@@ -55,7 +57,7 @@ def set_file_fields(path, artist, title):
         id3.year = args.year
 
     if not args.dry_run:
-        id3.commit()
+        id3.save()
 
     if not args.verbose:
         print("Tag for \"%s\" set." % filename)
