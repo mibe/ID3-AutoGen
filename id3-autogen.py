@@ -17,7 +17,7 @@ Requirements:
 Tested with Python 3.8.2 & mp3-tagger 1.0.
 """
 
-from mp3_tagger import MP3File, VERSION_1
+from mp3_tagger import MP3File, VERSION_1, VERSION_2, VERSION_BOTH
 from mp3_tagger.exceptions import MP3OpenFileError, TagSetError, FrameInitError
 import argparse, os, fnmatch, re
 
@@ -45,7 +45,6 @@ def set_file_fields(path, artist, title):
     directory, filename = os.path.split(path)
 
     id3 = MP3File(path)
-    id3.set_version(VERSION_1)
 
     id3.artist = artist
     id3.song = title
