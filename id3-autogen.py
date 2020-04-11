@@ -10,10 +10,10 @@ Copyright: (C) 2012-2016 Michael Bemmerl
 License: MIT License (see COPYING)
 
 Requirements:
-- Python (well, obviously ;-)
+- Python >= 3.6
 - pytagger (http://www.liquidx.net/pytagger/)
 
-Tested with Python 2.7.2 & pytagger 0.5.
+Tested with Python 3.8.2 & pytagger 0.5.
 """
 
 from tagger import *
@@ -58,10 +58,10 @@ def set_file_fields(path, artist, title):
         id3.commit()
 
     if not args.verbose:
-        print "Tag for \"%s\" set." % filename
+        print("Tag for \"%s\" set." % filename)
     else:
-        print "Tag for \"%s\" set:%s\tArtist: '%s'%s\tTitle: '%s'" % (filename, os.linesep, artist, os.linesep, title)
-        print "\tAlbum: '%s'%s\tYear: '%s'%s\tComment: '%s'" % (id3.album, os.linesep, id3.year, os.linesep, id3.comment)
+        print("Tag for \"%s\" set:%s\tArtist: '%s'%s\tTitle: '%s'" % (filename, os.linesep, artist, os.linesep, title))
+        print("\tAlbum: '%s'%s\tYear: '%s'%s\tComment: '%s'" % (id3.album, os.linesep, id3.year, os.linesep, id3.comment))
 
 
 def get_artist_title(path):
@@ -93,10 +93,10 @@ def do_file(path):
             artist = args.artist
 
         set_file_fields(path, artist, title)
-    except ValueError, e:
-        print str(e)
-    except ID3Exception, e:
-        print "ID3v1 exception '%s' while working with %s" % (str(e), filename)
+    except ValueError as e:
+        print(str(e))
+    except ID3Exception as e:
+        print("ID3v1 exception '%s' while working with %s" % (str(e), filename))
 
 # Check if it's a file or a directory
 if os.path.isdir(dir) is False:
