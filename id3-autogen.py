@@ -18,6 +18,7 @@ Tested with Python 3.8.2 & mp3-tagger 1.0.
 """
 
 from mp3_tagger import MP3File, VERSION_1
+from mp3_tagger.exceptions import MP3OpenFileError, TagSetError, FrameInitError
 import argparse, os, fnmatch, re
 
 parser = argparse.ArgumentParser(description="Simple script for generating ID3v1 tags from filename")
@@ -98,7 +99,7 @@ def do_file(path):
         set_file_fields(path, artist, title)
     except ValueError as e:
         print(str(e))
-    except ID3Exception as e:
+    except (MP3OpenFileError, TagSetError, FrameInitError) as e:
         print("ID3v1 exception '%s' while working with %s" % (str(e), filename))
 
 # Check if it's a file or a directory
