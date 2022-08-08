@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ID3_AutoGen
+﻿namespace ID3_AutoGen
 {
-	class Id3Data
+	class Id3Tag
 	{
 		public string Comment
 		{
@@ -18,7 +14,7 @@ namespace ID3_AutoGen
 			set;
 		}
 
-		public ushort Year
+		public ushort? Year
 		{
 			get;
 			set;
