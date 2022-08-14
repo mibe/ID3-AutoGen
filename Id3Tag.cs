@@ -1,4 +1,11 @@
-﻿namespace ID3_AutoGen
+﻿/*
+ * Part of the ID3-AutoGen project
+ * Copyright (c) 2012-2022 Michael Bemmerl
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
+namespace ID3_AutoGen
 {
 	using System;
 	using CommunityToolkit.Diagnostics;

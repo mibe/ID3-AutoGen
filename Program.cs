@@ -1,17 +1,37 @@
-﻿namespace ID3_AutoGen
+﻿/*
+ * Part of the ID3-AutoGen project
+ * Copyright (c) 2012-2022 Michael Bemmerl
+ *
+ * SPDX-License-Identifier: MIT
+ */
+
+namespace ID3_AutoGen
 {
 	using System;
 	using System.Collections.Generic;
 	using CommandLine;
 	using System.IO;
+	using System.Linq;
 
 	class Program
 	{
 		static void Main(string[] args)
 		{
-			var result = Parser.Default.ParseArguments<Options>(args);
+			Parser parser = new Parser(x => x.HelpWriter = null);
 
-			if (!(result is NotParsed<Options>))
+			var result = parser.ParseArguments<Options>(args);
+
+			if (result is NotParsed<Options>)
+			{
+				if (args.Contains("--license"))
+				{
+					Console.Write(Properties.Resources.licenses);
+					return;
+				}
+
+				displayHelp(result);
+			}
+			else
 			{
 				Options opt = result.Value;
 
@@ -26,8 +46,8 @@
 
 				Tagger tagger = new Tagger(tag);
 				tagger.DryRun = opt.DryRun;
-				
-				foreach(string filter in opt.Filter)
+
+				foreach (string filter in opt.Filter)
 					tagger.Filters.Add(filter);
 
 				DirectoryInfo dir = new DirectoryInfo(opt.Directory);
@@ -71,6 +91,19 @@
 			}
 		}
 
+		static void displayHelp(ParserResult<Options> result)
+		{
+			var helpText = CommandLine.Text.HelpText.AutoBuild(result, h =>
+			{
+				h.Heading += Environment.NewLine + "This program is free software.";
+				h.Copyright = "Copyright (c) 2012-2022 Michael Bemmerl" + Environment.NewLine;
+				h.Copyright += "This program uses CommandLineParser, ID3.NET and CommunityToolkit. Use the license switch for more information.";
+				return CommandLine.Text.HelpText.DefaultParsingErrorsHandler(result, h);
+			}, e => e);
+
+			Console.Error.WriteLine(helpText);
+		}
+
 		class Options
 		{
 			[Value(0, MetaName = "DIR", Required = true, HelpText = "Directory which contains the MP3 files.")]
@@ -107,6 +140,10 @@
 
 			[Option("filter", HelpText = "Filter these words from artist / title.")]
 			public IEnumerable<string> Filter
+			{ get; set; }
+
+			[Option("license", HelpText = "Display license information.")]
+			public bool ShowLicense
 			{ get; set; }
 		}
 	}
