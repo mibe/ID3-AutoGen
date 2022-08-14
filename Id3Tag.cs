@@ -1,35 +1,46 @@
 ﻿namespace ID3_AutoGen
 {
-	class Id3Tag
+	using System;
+	using CommunityToolkit.Diagnostics;
+
+	class Id3Tag : ICloneable
 	{
+		ushort? year;
+
 		public string Comment
-		{
-			get;
-			set;
-		}
+		{ get; set; }
 
 		public string Album
-		{
-			get;
-			set;
-		}
+		{ get; set; }
 
 		public ushort? Year
 		{
-			get;
-			set;
+			get => this.year;
+			set
+			{
+				if (value.HasValue)
+					Guard.IsBetweenOrEqualTo(value.Value, (ushort)1, (ushort)9999, nameof(value));
+
+				this.year = value;
+			}
 		}
 
 		public string Artist
-		{
-			get;
-			set;
-		}
+		{ get; set; }
 
 		public string Title
+		{ get; set; }
+
+		public object Clone()
 		{
-			get;
-			set;
+			Id3Tag newTag = new Id3Tag();
+			newTag.Comment = this.Comment;
+			newTag.Album = this.Album;
+			newTag.Year = this.Year;
+			newTag.Artist = this.Artist;
+			newTag.Title = this.Title;
+
+			return newTag;
 		}
 	}
 }

@@ -9,8 +9,8 @@
 
 	class Tagger
 	{
-		private Regex regex = new Regex(@"^([\w\s\.\',\+\-&]+?) - ([\(\)\w\s\.\',\-\!&]+)", RegexOptions.Compiled);
-		private List<string> filters;
+		private readonly Regex regex = new Regex(@"^([\w\s\.\',\+\-&]+?) - ([\(\)\w\s\.\',\-\!&]+)", RegexOptions.Compiled);
+		private readonly List<string> filters;
 
 		private readonly Id3Tag id3Tag;
 
@@ -20,15 +20,14 @@
 		public IList<string> Filters => this.filters;
 
 		public Tagger() : this(new Id3Tag())
-		{
-			this.filters = new List<string>();
-		}
+		{ }
 
 		public Tagger(Id3Tag id3Tag)
 		{
 			Guard.IsNotNull(id3Tag, nameof(id3Tag));
 
 			this.id3Tag = id3Tag;
+			this.filters = new List<string>();
 		}
 
 		public bool Tag(FileInfo file, out Id3Tag tagWritten)
@@ -45,8 +44,7 @@
 			artist = filter(artist);
 			title = filter(title);
 
-			// FIXME: Copy
-			Id3Tag tag = this.id3Tag;
+			Id3Tag tag = (Id3Tag)this.id3Tag.Clone();
 
 			// Use the artist extracted by the RegEx if it was not set from the caller.
 			tag.Artist ??= artist;
