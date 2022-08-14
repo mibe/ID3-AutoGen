@@ -3,3 +3,7 @@ testfile.mp3
 testdir
 
 /run.bat
+/Properties/launchSettings.json
+/.vs
+/bin
+/obj
