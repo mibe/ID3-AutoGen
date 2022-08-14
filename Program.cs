@@ -23,6 +23,7 @@ namespace ID3_AutoGen
 
 			if (result is NotParsed<Options>)
 			{
+				// Special case for showing license info
 				if (args.Contains("--license"))
 				{
 					Console.Write(Properties.Resources.licenses);
@@ -52,8 +53,10 @@ namespace ID3_AutoGen
 
 				DirectoryInfo dir = new DirectoryInfo(opt.Directory);
 
+				// Check if the given path is a file or a directory.
 				if (dir.Exists)
 				{
+					// It's a directory, so enumerate all files matching the given pattern or default to *.mp3.
 					foreach (FileInfo file in dir.EnumerateFiles(opt.Pattern ?? "*.mp3"))
 					{
 						processFile(tagger, file, opt.Verbose);
@@ -76,13 +79,13 @@ namespace ID3_AutoGen
 			bool success = tagger.Tag(file, out var writtenTag);
 
 			if (!success)
-				Console.Error.WriteLine("Tagging \"{0}\" failed.", file.Name);
+				Console.Error.WriteLine("Tagging of \"{0}\" failed.", file.Name);
 
 			if (!verbose)
 				Console.WriteLine("Tag for \"{0}\" set.", file.Name);
 			else
 			{
-				Console.WriteLine("Tag for \"{0}\" set.", file.Name);
+				Console.WriteLine("Tag for \"{0}\" set:", file.Name);
 				Console.WriteLine("\tArtist: {0}", writtenTag.Artist);
 				Console.WriteLine("\tTitle: {0}", writtenTag.Title);
 				Console.WriteLine("\tAlbum: {0}", writtenTag.Album);

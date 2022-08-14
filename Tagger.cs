@@ -10,10 +10,14 @@ namespace ID3_AutoGen
 	using CommunityToolkit.Diagnostics;
 	using Id3;
 	using Id3.Frames;
+	using System;
 	using System.Collections.Generic;
 	using System.IO;
 	using System.Text.RegularExpressions;
 
+	/// <summary>
+	/// Provides methods for tagging MP3 files while automatically detecting ID3 data from the filename.
+	/// </summary>
 	internal class Tagger
 	{
 		private readonly Regex regex = new Regex(@"^([\w\s\.\',\+\-&]+?) - ([\(\)\w\s\.\',\-\!&]+)", RegexOptions.Compiled);
@@ -21,14 +25,28 @@ namespace ID3_AutoGen
 
 		private readonly Id3Tag id3Tag;
 
+		/// <summary>
+		/// TRUE if no files should be changed.
+		/// </summary>
 		public bool DryRun
 		{ get; set; }
 
+		/// <summary>
+		/// List of words that should be filtered out of the artist and title tag.
+		/// </summary>
 		public IList<string> Filters => this.filters;
 
+		/// <summary>
+		/// Creates a new instance.
+		/// </summary>
 		public Tagger() : this(new Id3Tag())
 		{ }
 
+		/// <summary>
+		/// Creates a new instance. The <see cref="Tag"/> method uses the predefined data specified in <paramref name="id3Tag"/>.
+		/// </summary>
+		/// <param name="id3Tag">Predefined ID3 tag data.</param>
+		/// <exception cref="NullReferenceException">Predefined ID3 tag is NULL.</exception>
 		public Tagger(Id3Tag id3Tag)
 		{
 			Guard.IsNotNull(id3Tag, nameof(id3Tag));
@@ -37,6 +55,15 @@ namespace ID3_AutoGen
 			this.filters = new List<string>();
 		}
 
+		/// <summary>
+		/// Detects the artist and title tag from the filename specified in <paramref name="file"/> and writes that data to the file.
+		/// Existing ID3 data will be overwritten.
+		/// </summary>
+		/// <param name="file">File that should be tagged.</param>
+		/// <param name="tagWritten">Resulting ID3 tag.</param>
+		/// <returns>TRUE on success.</returns>
+		/// <exception cref="NullReferenceException"><see cref="file"/> is NULL.</exception>
+		/// <exception cref="ArgumentException">Artist and title could not be detected.</exception>
 		public bool Tag(FileInfo file, out Id3Tag tagWritten)
 		{
 			Guard.IsNotNull(file, nameof(file));
@@ -64,6 +91,12 @@ namespace ID3_AutoGen
 			return success;
 		}
 
+		/// <summary>
+		/// Detects the artist and title tag from the filename specified in <paramref name="file"/> and writes that data to the file.
+		/// Existing ID3 data will be overwritten.
+		/// </summary>
+		/// <param name="file">File that should be tagged.</param>
+		/// <returns>TRUE on success.</returns>
 		public bool Tag(FileInfo file)
 		{
 			return Tag(file, out _);
@@ -115,6 +148,7 @@ namespace ID3_AutoGen
 				fileTag.Album = new AlbumFrame(tag.Album);
 			}
 
+			// Don't write changes to the file if DryRun is active.
 			return DryRun || mp3.WriteTag(fileTag, Id3Version.V1X);
 		}
 	}
