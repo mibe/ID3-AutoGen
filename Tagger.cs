@@ -7,7 +7,7 @@
 	using System.IO;
 	using System.Text.RegularExpressions;
 
-	class Tagger
+	internal class Tagger
 	{
 		private readonly Regex regex = new Regex(@"^([\w\s\.\',\+\-&]+?) - ([\(\)\w\s\.\',\-\!&]+)", RegexOptions.Compiled);
 		private readonly List<string> filters;
@@ -41,8 +41,8 @@
 			string artist = match.Groups[1].Value;
 			string title = match.Groups[2].Value;
 
-			artist = filter(artist);
-			title = filter(title);
+			artist = filter(artist).Trim();
+			title = filter(title).Trim();
 
 			Id3Tag tag = (Id3Tag)this.id3Tag.Clone();
 
