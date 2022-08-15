@@ -12,6 +12,7 @@ namespace ID3_AutoGen
 	using CommandLine;
 	using System.IO;
 	using System.Linq;
+	using CommandLine.Text;
 
 	class Program
 	{
@@ -98,6 +99,7 @@ namespace ID3_AutoGen
 		{
 			var helpText = CommandLine.Text.HelpText.AutoBuild(result, h =>
 			{
+				h.MaximumDisplayWidth = Console.WindowWidth;
 				h.Heading += Environment.NewLine + "This program is free software.";
 				h.Copyright = "Copyright (c) 2012-2022 Michael Bemmerl" + Environment.NewLine;
 				h.Copyright += "This program uses CommandLineParser, ID3.NET and CommunityToolkit. Use the license switch for more information.";
@@ -148,6 +150,18 @@ namespace ID3_AutoGen
 			[Option("license", HelpText = "Display license information.")]
 			public bool ShowLicense
 			{ get; set; }
+
+			[Usage()]
+			public static IEnumerable<CommandLine.Text.Example> Examples
+			{
+				get
+				{
+					yield return new Example("Tag all files in the specified directory. Set the album and year tag accordingly",
+						new Options { Directory = "C:\\Music\\Metal", Album = "Master of Puppets", Year = 1986 });
+					yield return new Example("Tag a single file and set a comment tag. The artist detection is overwritten",
+						new Options { Directory = "~/woodstock/Jimi - Hey Joe.mp3", Artist = "Jimi Hendrix", Comment = "Bootleg at Woodstock"});
+				}
+			}
 		}
 	}
 }
