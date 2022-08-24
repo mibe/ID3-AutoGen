@@ -1,6 +1,6 @@
 ID3-AutoGen
 ===========
-A program for generating ID3v1 tags from a MP3 filename.
+A program for generating ID3v1 tags from an MP3 filename.
 
 For example, the file "MyBand0815 - Freaking Great Song.mp3" would result in a
 ID3v1 tag with "MyBand0815" in the 'artist' field and "Freaking Great Song"
