@@ -58,6 +58,12 @@ namespace ID3_AutoGen
 		{ get; set; }
 
 		/// <summary>
+		/// Genre tag
+		/// </summary>
+		public Id3Genre? Genre
+		{ get; set; }
+
+		/// <summary>
 		/// Creates a new object that is a copy of the current instance.
 		/// </summary>
 		/// <returns>A new object that is a copy of this instance.</returns>
@@ -69,6 +75,7 @@ namespace ID3_AutoGen
 			newTag.Year = this.Year;
 			newTag.Artist = this.Artist;
 			newTag.Title = this.Title;
+			newTag.Genre = this.Genre;
 
 			return newTag;
 		}

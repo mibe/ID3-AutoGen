@@ -25,7 +25,7 @@ namespace ID3_AutoGen
 			if (result is NotParsed<Options>)
 			{
 				// Special case for showing license info
-				if (args.Contains("--license"))
+				if (args.Select(y => y.ToLower()).Contains("--license"))
 				{
 					Console.Write(Properties.Resources.licenses);
 					return;
@@ -45,6 +45,7 @@ namespace ID3_AutoGen
 				tag.Artist = opt.Artist;
 				tag.Comment = opt.Comment;
 				tag.Year = opt.Year;
+				tag.Genre = opt.Genre;
 
 				Tagger tagger = new Tagger(tag);
 				tagger.DryRun = opt.DryRun;
@@ -92,6 +93,7 @@ namespace ID3_AutoGen
 				Console.WriteLine("\tAlbum: {0}", writtenTag.Album);
 				Console.WriteLine("\tYear: {0}", writtenTag.Year);
 				Console.WriteLine("\tComment: {0}", writtenTag.Comment);
+				Console.WriteLine("\tGenre: {0}", writtenTag.Genre.HasValue ? writtenTag.Genre.Value.ToString() : "None");
 			}
 		}
 
@@ -125,6 +127,10 @@ namespace ID3_AutoGen
 
 			[Option('y', "year", HelpText = "Content of 'year' field.")]
 			public ushort? Year
+			{ get; set; }
+
+			[Option('g', "genre", HelpText = "Genre of the song.")]
+			public Id3Genre? Genre
 			{ get; set; }
 
 			[Option('p', "pattern", HelpText = "Process only files matching this pattern.")]

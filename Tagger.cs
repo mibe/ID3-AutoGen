@@ -14,6 +14,7 @@ namespace ID3_AutoGen
 	using System.Collections.Generic;
 	using System.IO;
 	using System.Text.RegularExpressions;
+	using CommandLine;
 
 	/// <summary>
 	/// Provides methods for tagging MP3 files while automatically detecting ID3 data from the filename.
@@ -121,35 +122,60 @@ namespace ID3_AutoGen
 		{
 			Guard.IsNotNull(file);
 			Guard.IsNotNull(tag);
+			bool success = false;
 
 			tag.Artist = tag.Artist.Trim();
 			tag.Title = tag.Title.Trim();
 
-			using Mp3 mp3 = new Mp3(file, Mp3Permissions.ReadWrite);
-
-			Id3.Id3Tag fileTag = new Id3.Id3Tag();
-
-			fileTag.Artists = new ArtistsFrame();
-			fileTag.Artists.Value.Add(tag.Artist);
-			fileTag.Title = new TitleFrame(tag.Title);
-
-			if (tag.Year.HasValue)
-				fileTag.Year = new YearFrame(tag.Year.Value);
-
-			if (tag.Comment != null)
+			using (Mp3 mp3 = new Mp3(file, Mp3Permissions.ReadWrite))
 			{
-				tag.Comment = tag.Comment.Trim();
-				fileTag.Comments.Add(tag.Comment);
+				Id3.Id3Tag fileTag = new Id3.Id3Tag();
+
+				fileTag.Artists = new ArtistsFrame();
+				fileTag.Artists.Value.Add(tag.Artist);
+				fileTag.Title = new TitleFrame(tag.Title);
+
+				if (tag.Year.HasValue)
+					fileTag.Year = new YearFrame(tag.Year.Value);
+
+				if (tag.Comment != null)
+				{
+					tag.Comment = tag.Comment.Trim();
+					fileTag.Comments.Add(tag.Comment);
+				}
+
+				if (tag.Album != null)
+				{
+					tag.Album = tag.Album.Trim();
+					fileTag.Album = new AlbumFrame(tag.Album);
+				}
+
+				// Don't write changes to the file if DryRun is active.
+				success = DryRun || mp3.WriteTag(fileTag, Id3Version.V1X);
 			}
 
-			if (tag.Album != null)
+			// The library used for writing the ID3 tags to the MP3 file lacks support for writing a genre tag.
+			// (See https://github.com/JeevanJames/Id3/issues/2)
+			// We're lucky here: The genre tag is in ID3v1 actually the very last byte of the segment and thus the file.
+			// So open the file for writing, jump to the last byte and set it accordingly.
+			// But only if DryRun is not active and writing of the other tags was successful.
+			if (success && !DryRun)
 			{
-				tag.Album = tag.Album.Trim();
-				fileTag.Album = new AlbumFrame(tag.Album);
+				using FileStream stream = file.OpenWrite();
+				Guard.CanWrite(stream);
+
+				stream.Position = stream.Length - 1;
+
+				// The specification has no information what value means "genre not set", but Winamp uses 0xFF, so we do so too.
+				byte genre = 0xFF;
+
+				if (tag.Genre.HasValue)
+					genre = (byte)tag.Genre.Value;
+
+				stream.WriteByte(genre);
 			}
 
-			// Don't write changes to the file if DryRun is active.
-			return DryRun || mp3.WriteTag(fileTag, Id3Version.V1X);
+			return success;
 		}
-	}
+}
 }
