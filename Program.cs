@@ -9,6 +9,7 @@ namespace ID3_AutoGen
 {
 	using System;
 	using System.Collections.Generic;
+	using System.Diagnostics.CodeAnalysis;
 	using CommandLine;
 	using System.IO;
 	using System.Linq;
@@ -24,14 +25,13 @@ namespace ID3_AutoGen
 
 			if (result is NotParsed<Options>)
 			{
-				// Special case for showing license info
+				// Special case for showing license info or genres
 				if (args.Select(y => y.ToLower()).Contains("--license"))
-				{
 					Console.Write(Properties.Resources.licenses);
-					return;
-				}
-
-				displayHelp(result);
+				else if (args.Select(y => y.ToLower()).Contains("--genres"))
+					displayGenres();
+				else
+					displayHelp(result);
 			}
 			else
 			{
@@ -99,18 +99,34 @@ namespace ID3_AutoGen
 
 		static void displayHelp(ParserResult<Options> result)
 		{
-			var helpText = CommandLine.Text.HelpText.AutoBuild(result, h =>
+			var helpText = HelpText.AutoBuild(result, h =>
 			{
 				h.MaximumDisplayWidth = Console.WindowWidth;
 				h.Heading += Environment.NewLine + "This program is free software.";
 				h.Copyright = "Copyright (c) 2012-2022 Michael Bemmerl" + Environment.NewLine;
 				h.Copyright += "This program uses CommandLineParser, ID3.NET and CommunityToolkit. Use the license switch for more information.";
-				return CommandLine.Text.HelpText.DefaultParsingErrorsHandler(result, h);
+				return HelpText.DefaultParsingErrorsHandler(result, h);
 			}, e => e);
 
 			Console.Error.WriteLine(helpText);
 		}
 
+		static void displayGenres()
+		{
+			Console.WriteLine("Available genres are (sorted):");
+			Console.WriteLine();
+
+			IEnumerable<string> genres = Enum.GetNames(typeof(Id3Genre)).ToList();
+
+			foreach (string genre in genres.OrderBy(x => x))
+			{
+				Console.Write("\t");
+				Console.WriteLine(genre);
+			}
+		}
+
+		[SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Local")]
+		[SuppressMessage("ReSharper", "UnusedMember.Local")]
 		class Options
 		{
 			[Value(0, MetaName = "DIR", Required = true, HelpText = "Directory which contains the MP3 files.")]
@@ -157,8 +173,12 @@ namespace ID3_AutoGen
 			public bool ShowLicense
 			{ get; set; }
 
+			[Option("genres", HelpText = "Display available genres.")]
+			public bool ShowGenres
+			{ get; set; }
+
 			[Usage()]
-			public static IEnumerable<CommandLine.Text.Example> Examples
+			public static IEnumerable<Example> Examples
 			{
 				get
 				{

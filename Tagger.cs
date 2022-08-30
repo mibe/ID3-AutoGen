@@ -14,7 +14,6 @@ namespace ID3_AutoGen
 	using System.Collections.Generic;
 	using System.IO;
 	using System.Text.RegularExpressions;
-	using CommandLine;
 
 	/// <summary>
 	/// Provides methods for tagging MP3 files while automatically detecting ID3 data from the filename.
@@ -44,7 +43,7 @@ namespace ID3_AutoGen
 		{ }
 
 		/// <summary>
-		/// Creates a new instance. The <see cref="Tag"/> method uses the predefined data specified in <paramref name="id3Tag"/>.
+		/// Creates a new instance. The <see cref="Id3Tag"/> method uses the predefined data specified in <paramref name="id3Tag"/>.
 		/// </summary>
 		/// <param name="id3Tag">Predefined ID3 tag data.</param>
 		/// <exception cref="NullReferenceException">Predefined ID3 tag is NULL.</exception>
