@@ -8,7 +8,7 @@ in the 'title' field.
 
 Usage
 -----
-    ID3-AutoGen 2.0.0
+    ID3-AutoGen 2.1.0
     This program is free software.
     Copyright (c) 2012-2022 Michael Bemmerl
     This program uses CommandLineParser, ID3.NET and CommunityToolkit. Use the license switch for more information.
@@ -25,6 +25,8 @@ Usage
 
       -y, --year       Content of 'year' field.
 
+      -g, --genre      Genre of the song.
+
       -p, --pattern    Process only files matching this pattern.
 
       --artist         Overwrite artist detection.
@@ -36,6 +38,8 @@ Usage
       --filter         Filter these words from artist / title.
 
       --license        Display license information.
+
+      --genres         Display available genres.
 
       --help           Display this help screen.
 
