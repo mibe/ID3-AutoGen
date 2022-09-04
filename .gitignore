@@ -3,8 +3,8 @@ testfile.mp3
 testdir
 
 /run.bat
-/Properties/launchSettings.json
+/src/Properties/launchSettings.json
 /.vs
-/bin
-/obj
+/src/bin
+/src/obj
 /dist

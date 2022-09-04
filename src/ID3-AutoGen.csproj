@@ -17,18 +17,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="testdir\**" />
-    <EmbeddedResource Remove="testdir\**" />
-    <None Remove="testdir\**" />
-    <None Include="COPYING">
-      <Pack>True</Pack>
-      <PackagePath></PackagePath>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Remove="run.bat" />
-    <None Remove="testfile.mp3" />
+    <None Remove="ID3-AutoGen.csproj.DotSettings" />
   </ItemGroup>
 
   <ItemGroup>
