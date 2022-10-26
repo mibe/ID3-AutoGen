@@ -32,6 +32,12 @@ namespace ID3_AutoGen
 		{ get; set; }
 
 		/// <summary>
+		/// TRUE if ID3v2 tags should be removed.
+		/// </summary>
+		public bool RemoveId3V2Tags
+		{ get; set; }
+
+		/// <summary>
 		/// List of words that should be filtered out of the artist and title tag.
 		/// </summary>
 		public IList<string> Filters => this.filters;
@@ -160,8 +166,9 @@ namespace ID3_AutoGen
 			// But only if DryRun is not active and writing of the other tags was successful.
 			if (success && !DryRun)
 			{
-				using FileStream stream = file.OpenWrite();
+				FileStream stream = file.OpenWrite();
 				Guard.CanWrite(stream);
+				Guard.CanSeek(stream);
 
 				stream.Position = stream.Length - 1;
 
@@ -172,9 +179,36 @@ namespace ID3_AutoGen
 					genre = (byte)tag.Genre.Value;
 
 				stream.WriteByte(genre);
+
+				if (RemoveId3V2Tags)
+				{
+					stream.Close();
+
+					byte[] buffer = File.ReadAllBytes(file.FullName);
+					int idx = 0;
+
+					// Look for the first 0xFF as MP3's Magic Number (actually the first 11 bits of the frame sync are one's).
+					do
+					{
+						if (buffer[idx] == 0xFF)
+							break;
+					} while (idx++ < buffer.Length - 1);
+
+					// If the position is somewhere in the file rather than at the start we have stuff at the beginning of the file 
+					// instead of the frame sync bits. This are probably the ID3v2 tags. Let's remove them.
+					if (idx > 0)
+					{
+						// Overwrite the file but start from the beginning of the MP3 data.
+						stream = file.OpenWrite();
+						stream.Write(buffer, idx, buffer.Length - idx);
+						stream.SetLength(buffer.Length - idx);
+					}
+				}
+
+				stream.Dispose();
 			}
 
 			return success;
 		}
-}
+	}
 }

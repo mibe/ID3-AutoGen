@@ -49,6 +49,7 @@ namespace ID3_AutoGen
 
 				Tagger tagger = new Tagger(tag);
 				tagger.DryRun = opt.DryRun;
+				tagger.RemoveId3V2Tags = opt.RemoveId3V2Tags;
 
 				foreach (string filter in opt.Filter)
 					tagger.Filters.Add(filter);
@@ -129,7 +130,7 @@ namespace ID3_AutoGen
 		[SuppressMessage("ReSharper", "UnusedMember.Local")]
 		class Options
 		{
-			[Value(0, MetaName = "DIR", Required = true, HelpText = "Directory which contains the MP3 files.")]
+			[Value(0, MetaName = "DIR", Required = true, HelpText = "Directory which contains the MP3 files or path to a single MP3 file.")]
 			public string Directory
 			{ get; set; }
 
@@ -169,6 +170,10 @@ namespace ID3_AutoGen
 			public IEnumerable<string> Filter
 			{ get; set; }
 
+			[Option("remove-id3v2", HelpText = "Remove ID3v2 tags.")]
+			public bool RemoveId3V2Tags
+			{ get; set; }
+
 			[Option("license", HelpText = "Display license information.")]
 			public bool ShowLicense
 			{ get; set; }
@@ -185,7 +190,7 @@ namespace ID3_AutoGen
 					yield return new Example("Tag all files in the specified directory. Set the album and year tag accordingly",
 						new Options { Directory = "C:\\Music\\Metal", Album = "Master of Puppets", Year = 1986 });
 					yield return new Example("Tag a single file and set a comment tag. The artist detection is overwritten",
-						new Options { Directory = "~/woodstock/Jimi - Hey Joe.mp3", Artist = "Jimi Hendrix", Comment = "Bootleg at Woodstock"});
+						new Options { Directory = "~/woodstock/Jimi - Hey Joe.mp3", Artist = "Jimi Hendrix", Comment = "Bootleg at Woodstock" });
 				}
 			}
 		}
