@@ -8,7 +8,7 @@ in the 'title' field.
 
 Usage
 -----
-    ID3-AutoGen 2.1.0
+    ID3-AutoGen 2.2.0
     This program is free software.
     Copyright (c) 2012-2022 Michael Bemmerl
     This program uses CommandLineParser, ID3.NET and CommunityToolkit. Use the license switch for more information.
@@ -36,6 +36,8 @@ Usage
       --verbose        More detailed output.
 
       --filter         Filter these words from artist / title.
+
+      --remove-id3v2   Remove ID3v2 tags.
 
       --license        Display license information.
 
